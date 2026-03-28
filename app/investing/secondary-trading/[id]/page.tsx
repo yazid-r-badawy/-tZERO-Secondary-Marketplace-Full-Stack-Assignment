@@ -142,6 +142,7 @@ export default function SecondaryTradingDetailPage() {
 	}
 	const [isDragging, setIsDragging] = useState(false)
 	const [dragStartX, setDragStartX] = useState(0)
+    const [confirmSide, setConfirmSide] = useState<'buy' | 'sell' | null>(null)
 
 
 
@@ -717,7 +718,7 @@ const refreshData = async () => {
 										backgroundColor: '#04ee04',
 									},
 								}}
-								onClick={() => placeOrder('buy')}
+								onClick={() => setConfirmSide('buy')}
 							>
 								Buy
 							</Button>
@@ -734,10 +735,65 @@ const refreshData = async () => {
 										backgroundColor: '#5f0b0b',
 									},
 								}}
-								onClick={() => placeOrder('sell')}
+								onClick={() => setConfirmSide('sell')}
 							>
 								Sell
 							</Button>
+
+                            {confirmSide && (
+                                <Paper
+                                    sx={{
+                                    mt: 2,
+                                    p: 2,
+                                    borderRadius: 2,
+                                    backgroundColor: '#1a1a1a',
+                                    border: `1px solid ${confirmSide === 'buy' ? '#00ff88' : '#ff4d4d'}`,
+                                    position: 'relative',
+                                    }}
+                                >
+                                    {/* Close (X) */}
+                                    <Typography
+                                    onClick={() => setConfirmSide(null)}
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 8,
+                                        right: 10,
+                                        cursor: 'pointer',
+                                        color: '#888',
+                                        fontWeight: 'bold',
+                                    }}
+                                    >
+                                    ✕
+                                    </Typography>
+
+                                    <Typography sx={{ color: '#fff', mb: 1 }}>
+                                    Confirm {confirmSide === 'buy' ? 'Buy' : 'Sell'} Order
+                                    </Typography>
+
+                                    <Typography sx={{ color: '#aaa', fontSize: 14, mb: 2 }}>
+                                    {quantity} shares @ ${Number(price).toFixed(2)}
+                                    </Typography>
+
+                                    <Button
+                                    fullWidth
+                                    variant="contained"
+                                    disabled={!price || !quantity || Number(quantity) <= 0}
+                                    sx={{
+                                        backgroundColor: confirmSide === 'buy' ? '#00ff88' : '#ff4d4d',
+                                        color: '#000',
+                                        '&:hover': {
+                                        backgroundColor: confirmSide === 'buy' ? '#00cc6a' : '#cc0000',
+                                        },
+                                    }}
+                                    onClick={() => {
+                                        placeOrder(confirmSide)
+                                        setConfirmSide(null)
+                                    }}
+                                    >
+                                    Confirm
+                                    </Button>
+                                </Paper>
+                                )}
 						
             </Paper>
           </Grid>
