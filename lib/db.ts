@@ -179,6 +179,7 @@ export function initializeDatabase() {
       FOREIGN KEY (payment_method_id) REFERENCES payment_methods(id) ON DELETE SET NULL
     )
   `)
+	
 
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_investments_user_id ON investments(user_id)
@@ -265,8 +266,6 @@ export function initializeDatabase() {
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_trading_balances_user_id ON trading_balances(user_id)
   `)
-
-  console.log('✅ Database initialized successfully')
 }
 
 // Initialize on import

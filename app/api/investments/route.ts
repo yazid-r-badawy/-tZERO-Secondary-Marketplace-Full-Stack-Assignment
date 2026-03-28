@@ -11,7 +11,6 @@ export const dynamic = 'force-dynamic'
 
 
 export async function GET(request: NextRequest) {
-	console.log('INVESTMENTS ROUTE HIT')
 
   try {
     const userId = await getAuthUserId(request)
@@ -47,7 +46,6 @@ export async function GET(request: NextRequest) {
         trading: initializeAssetData(asset, template),
       }
     })
-		console.log('Here at least')
     return NextResponse.json({ investments: enrichedInvestments })
 
 

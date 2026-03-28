@@ -15,7 +15,7 @@ export function getOrCreateSystemUser() {
 		`).run(
 				id,
 				'system@trading.local',
-				'system-password', // 👈 required
+				'system-password',
 				'System',
 				'User'
 		)

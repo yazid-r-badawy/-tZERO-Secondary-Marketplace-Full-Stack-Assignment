@@ -25,7 +25,6 @@ interface Investment {
 
 export default function CashBalance() {
   const [cashAvailable, setCashAvailable] = useState(0)
-	console.log("WE ARE IN CASH BALANCE", cashAvailable)
   const [investments, setInvestments] = useState<Investment[]>([])
   const [loading, setLoading] = useState(true)
   const [positionsExpanded, setIsPositionsExpanded] = useState(true)

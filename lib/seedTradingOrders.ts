@@ -68,6 +68,4 @@ export function seedTradingOrdersFromTemplates(asset: any, templates: any) {
       now
     )
   })
-
-  console.log(`Seeded order book for ${asset.symbol}`)
 }

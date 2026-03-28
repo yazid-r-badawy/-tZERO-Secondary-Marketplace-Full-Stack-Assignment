@@ -49,7 +49,6 @@ export async function DELETE(req: NextRequest, { params }: any) {
             }
         }
     }
-    console.log("RIGHT HERE")
     
 
     return NextResponse.json({ success: true })

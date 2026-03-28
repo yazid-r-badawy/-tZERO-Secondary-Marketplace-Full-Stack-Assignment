@@ -15,11 +15,9 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       )
     }
-    console.log("BALANCE ROUTE USER:", userId)
 
     const user = findUserById(userId)
     if (!user) {
-    console.log("BALANCE ROUTE USER: ERROR")
       return NextResponse.json(
         
         { error: 'User not found.' },
@@ -33,7 +31,6 @@ export async function GET(request: NextRequest) {
 
     const balance = balanceRow?.cash_balance ?? 0
 
-console.log("WE ARE IN BANKING/BALANCE", balance)
     return NextResponse.json({ balance })
   } catch (error: any) {
     console.error('Error fetching cash balance:', error)

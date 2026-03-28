@@ -58,19 +58,6 @@ export default function SecondaryTradingDetailPage() {
     )
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   const symbol = getSecondaryTradingSymbol(asset.title, asset.symbol)
 
   // ===== CHART DATA =====
@@ -90,23 +77,7 @@ export default function SecondaryTradingDetailPage() {
 								}
 							})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	const [zoomStart, setZoomStart] = useState(0)    				 // start index of displayed data
+	const [zoomStart, setZoomStart] = useState(0)    			 // start index of displayed data
 	const [zoomEnd, setZoomEnd] = useState(processedData.length) // end index
 	const displayData = processedData.slice(zoomStart, zoomEnd)	 // where to slice the data
 	const firstPrice = displayData[0].price
@@ -118,8 +89,8 @@ export default function SecondaryTradingDetailPage() {
 
 
 	const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-		e.preventDefault() // prevent page scrolling
-		const delta = e.deltaY < 0 ? 1 : -1 // scroll down = zoom in, scroll up = zoom out
+		e.preventDefault() 
+		const delta = e.deltaY < 0 ? 1 : -1 
 		const minDays = 2
 		const maxDays = 90
 
@@ -127,7 +98,6 @@ export default function SecondaryTradingDetailPage() {
 		let newEnd = zoomEnd
 
 		if (delta > 0) {
-			// zoom in -> remove 1 day from each end if possible
 			if (newEnd - newStart > minDays) {
 				newStart += 1
 				newEnd -= 1
@@ -144,11 +114,6 @@ export default function SecondaryTradingDetailPage() {
 	const [dragStartX, setDragStartX] = useState(0)
     const [confirmSide, setConfirmSide] = useState<'buy' | 'sell' | null>(null)
 
-
-
-
-
-
 	// Create a ref for the chart element
 	const chartRef = useRef<HTMLDivElement | null>(null)
 
@@ -157,11 +122,8 @@ export default function SecondaryTradingDetailPage() {
 		if (!element) return
 
 		const killScroll = (event: WheelEvent) => {
-			// Cancel default browser scroll
 			event.preventDefault()
 		}
-
-		// Add a wheel listener that allows preventDefault
 		element.addEventListener('wheel', killScroll, { passive: false })
 
 		return () => {
@@ -169,47 +131,6 @@ export default function SecondaryTradingDetailPage() {
 		}
 	}, [])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// inside your component
 	useEffect(() => {
 		if (!isDragging) return
 
@@ -282,9 +203,6 @@ export default function SecondaryTradingDetailPage() {
 
 				const { orders = [], positions = [] } = res.data
 
-				console.log('MY ORDERS:', orders)
-				console.log('POSITIONS:', positions)
-
 				setOrders(orders)
 				setPositions(positions)
 			} catch (err) {
@@ -308,8 +226,6 @@ const placeOrder = async (side: 'buy' | 'sell') => {
       console.error(res.data.error)
       return
     }
-
-    console.log('ORDER SUCCESS', res.data)
 
     const ordersRes = await api.get(`/trading/orders?symbol=${symbol}`)
     const { orders = [] } = ordersRes.data
