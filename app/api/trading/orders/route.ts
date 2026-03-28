@@ -41,27 +41,13 @@ export async function POST(req: NextRequest) {
       .get(userId, symbol) as { shares: number }
 
     const shares = holdingRow?.shares || 0
-    console.log('USER HOLDINGS CHECK', {
-			userId,
-			symbol,
-			shares,
-    })
 
     // --- Checks ---
     if (side === 'buy') {
       const cost = quantity * price
       if (balance < cost) {
-				console.log("WE HAVE", balance)
         return NextResponse.json({ error: 'Insufficient funds' }, { status: 405 })
       }
-			console.log('TRADE COST CALCULATION', {
-				quantity,
-				price,
-				cost,
-				balance,
-				canAfford: balance >= cost,
-			})
-
       // Reserve cash immediately
       db.prepare(`
         UPDATE trading_balances
@@ -70,11 +56,18 @@ export async function POST(req: NextRequest) {
       `).run(cost, userId)
     }
 
+
+
+
+
+
     if (side === 'sell') {
       if (shares < quantity) {
         return NextResponse.json({ error: 'Not enough shares' }, { status: 406 })
       }
     }
+
+
 
     // --- Place + match order ---
     const orderId = crypto.randomUUID()
@@ -89,10 +82,50 @@ export async function POST(req: NextRequest) {
       'day'
     )
 
+    if (side === 'buy') {
+        const filledQty = quantity - result.remaining
+
+        // Get actual trades for this order
+        const trades = db.prepare(`
+            SELECT quantity, price
+            FROM trading_trades
+            WHERE buy_order_id = ? OR sell_order_id = ?
+        `).all(orderId, orderId) as Array<{ quantity: number; price: number }>
+
+        let actualSpent = 0
+
+        for (const trade of trades) {
+            actualSpent += trade.quantity * trade.price
+        }
+
+        const reserved = quantity * price
+        const refund = reserved - actualSpent
+
+        if (trades.length > 0 && refund > 0) {
+            db.prepare(`
+            UPDATE trading_balances
+            SET cash_balance = cash_balance + ?
+            WHERE user_id = ?
+            `).run(refund, userId)
+        }
+    }
+
+
+
     // --- Handle cash AFTER trades ---
     if (side === 'sell') {
       const filledQty = quantity - result.remaining
-      const proceeds = filledQty * price
+      const trades = db.prepare(`
+        SELECT quantity, price
+        FROM trading_trades
+        WHERE sell_order_id = ?
+        `).all(orderId) as Array<{ quantity: number; price: number }>
+
+        let proceeds = 0
+
+        for (const trade of trades) {
+            proceeds += trade.quantity * trade.price
+        }
 
       db.prepare(`
         UPDATE trading_balances

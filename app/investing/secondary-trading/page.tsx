@@ -79,7 +79,6 @@ export default function SecondaryTradingPage() {
 			return matchesName && matchesCategory
 		})
 	}, [allAssets, searchTerm, selectedCategories])
-  // ─── Replace this placeholder layout with your implementation ───
 
 
 
@@ -148,8 +147,8 @@ export default function SecondaryTradingPage() {
     						color: selectedCategories.length > 0 ? '#000' : '#FFF',
 								borderColor: 'rgba(255,255,255,0.15)',
 								'&:hover': {
-									borderColor: '#00ff88',  // hover outline stays green
-									backgroundColor: '#222222', // darker center
+									borderColor: '#00ff88', 
+									backgroundColor: '#222222', 
 									color: '#FFF',
 
 								},

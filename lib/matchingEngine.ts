@@ -84,13 +84,6 @@ export function matchOrder(
     `INSERT INTO trading_trades (id, buy_order_id, sell_order_id, symbol, quantity, price, created_at)
      VALUES (?, ?, ?, ?, ?, ?, ?)`
   )
-	
-	// REMOVE 
-	const debugQuery = db.prepare(`
-		SELECT * FROM trading_orders
-		WHERE symbol = ?
-	`)
-	//
 
 
   const matchQuery =
@@ -110,31 +103,15 @@ export function matchOrder(
 
   const matchOrders = db.prepare(matchQuery)
 	const matches = matchOrders.all(symbol, price) as Array<any>
-	if (side === 'buy') {
-		console.log("FETCHING SELL ORDERS FOR SYMBOL:", symbol)
-		console.log("SELL MATCHES:", matches)
-	}
-	const allOrders = debugQuery.all(symbol)
-	console.log("ALL ORDERS FOR SYMBOL (NO FILTER):", allOrders)
-
-	console.log("RAW MATCHES FROM DB:", matches)
-	console.log("FILTERED SELL ORDERS:", matches.map(m => ({
-		id: m.id,
-		symbol: m.symbol,
-		side: m.side,
-		price: m.price,
-		remaining: m.remaining_quantity,
-		status: m.status
-	})))
 
   return db.transaction(() => {
     insertOrder.run(orderId, userId, symbol, side, quantity, quantity, price, 'New', timeInForce, goodTilDate, now, now)
 
     let remaining = quantity
 
-		console.log("MATCH QUERY INPUT", { symbol, side, price })
+
     const matches = matchOrders.all(symbol, price) as Array<any>
-		console.log("FOUND MATCHES:", matches)
+
 
     for (const match of matches) {
       if (remaining <= 0) break
