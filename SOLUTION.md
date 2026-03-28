@@ -18,7 +18,7 @@ For this code I added or built inside the following files:
 
 The first main component that I completed was /investing/secondary-trading, adding a search bar and category filters.  While there is text in the search bar, I highlighted the outline in green to show that it is active as opposed to its neutral gray. In a similar vein if there is one or more categories selected in the search bar the button fills itself as green and the number of selected search categories pops up in the parenthesizes.
 
-Next I moved on to ( /investing/secondary-trading/[id] ), in this section I added several additional UX features including a zoomable and scrollable chart for better interaction with longer datasets such as real world stocks. (similar to tradingView if you are familiar) Furthermore, I added the functionality to the buy and sell buttons to place orders. The necessary features such as displaying the users order book and orders section were also completed as specified. If I had more time I would have added a confirmation window/pop-up when pressing the buy/sell button.
+Next I moved on to ( /investing/secondary-trading/[id] ), in this section I added several additional UX features including a zoomable and scrollable chart for better interaction with longer datasets such as real world stocks. (similar to tradingView if you are familiar) Furthermore, I added the functionality to the buy and sell buttons to place orders. The necessary features such as displaying the users order book and orders section were also completed as specified. If I had more time I would have added a better confirmation window/pop-up when pressing the buy/sell button.
 
 For the portfolio section:
 I wrote in assignment/components/portfolio/InvestmentsSection.tsx 
@@ -64,7 +64,7 @@ assignment/lib/seedTradingOrders.ts: this is the function that puts the secondar
 Decisions and tradeoffs:
 Through all the backend I ensured that no data left the database containing user_id’s (other than those supplied in) or other order_id for which could not be authenticated with the correct user_id. This was done to emulate proper data safety. I remained unsure as to what the all documents button in portfolio was intended for, no instructions were given and I could not think of something that would relate, hence I intentionally left it in a non-functioning state. Given more guidance it could be completed easily.
 
-As stated earlier I would have added a confirm trade pop-up when clicking the buy/sell buttons. Other than this for the time I think I completed all the main objectives as well as any utility enhancements that I wanted. 
+As stated earlier I would have added a better confirm trade pop-up when clicking the buy/sell buttons. Other than this for the time I think I completed all the main objectives as well as any utility enhancements that I wanted. 
 
 I was happy with the design choices mainly the zoomable charts that were generated. Also, all buttons in the website have a passive/hover/active color scheme (such as in /investing/secondary-trading tab) which I think is very nice and polished for the user. Error states are done properly, each error is handled so that nothing crashed the site and each has an individual error code.
 
